@@ -78,15 +78,15 @@ var errorMessage = {
 
 var deleteDB = function() {
 
-  fetch();
+  // fetch();
 
-  setTimeout(function() {
-    messages.forEach(function(objID) {
-      if (objID) {deleteMessage(objID);}
-    });
-    messages = [];
-    sendMessage(errorMessage);
-  }, 2000);
+  // setTimeout(function() {
+  //   messages.forEach(function(objID) {
+  //     if (objID) {deleteMessage(objID);}
+  //   });
+  //   messages = [];
+  //   sendMessage(errorMessage);
+  // }, 2000);
 
 };
 
