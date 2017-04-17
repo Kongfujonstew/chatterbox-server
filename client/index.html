@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>chatterbox</title>
+    <link rel="stylesheet" href="styles/styles.css">
+
+    <!-- dependencies -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script>
+      // YOU DO NOT NEED TO EDIT THIS CODE
+      if (!/(&|\?)username=/.test(window.location.search)) {
+        var newSearch = window.location.search;
+        if (newSearch !== '' & newSearch !== '?') {
+          newSearch += '&';
+        }
+        newSearch += 'username=' + (prompt('What is your name?') || 'anonymous');
+        window.location.search = newSearch;
+      }
+    </script>
+    <!-- your scripts -->
+    <script src="env/config.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="scripts/advanced.js"></script>
+  </head>
+  <body>
+    <div id="main">
+      <h1>Chatterbox</h1>
+      <!-- Your HTML goes here! -->
+
+
+      <div>
+        <select id="selectFloor">
+          <option>6</option>
+          <option>8</option>
+        </select>
+      </div>
+
+
+      <div id="send">
+        <h3>Input message</h3>
+
+        <table>
+          <tr>
+            <td><label>Username</label>
+            </td>
+            <td><input name="username" id="username"></input>
+            </td>
+          </tr>
+          <tr>
+            <td><label>Message</label>
+            </td>
+            <td><textarea name="message" id="message" rows="3"></textarea>
+            </td>
+          </tr>          
+          <tr>
+            <td><label>Room name</label>
+            </td>
+            <td><input name="new-room" id="new-room" value="Lobby"></input>
+            </td>
+          </tr> 
+        </table>
+
+
+        
+        <button class="submit">Submit</button>
+
+      </div>
+
+      <div id="changeMessages">
+        <h3>Input NEW MESSAGE</h3>
+
+        <table>
+          <tr>
+            <td><label>Message</label>
+            </td>
+            <td><textarea name="message" id="prependAll" rows="3"></textarea>
+            </td>
+          </tr>          
+        </table>
+        <button id="submitchangeMessages">Submit</button>
+
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <h1>Friends</h1>
+      <div id="friends"></div>
+
+      <div id="navbar">
+        <h2>NavBar</h2>
+        <div id="rooms">Rooms</div>
+        <select id="roomSelect">
+          <option>All rooms</option>
+
+        </select>
+
+        <button id="clearChats">Clear chats</button>
+        <button id="refresh">Refresh</button>
+      </div>
+
+
+      </div>
+
+    </div>
+ 
+    <h1>Chats</h1>
+    <div id="chats">
+    </div>
+
+    <div id="footer">Footer</div>
+
+  </body>
+</html>
