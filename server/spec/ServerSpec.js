@@ -65,7 +65,7 @@ describe('Node Server Request Listener Function', function() {
     var res = new stubs.response();
 
     handler.requestHandler(req, res);
-    console.log('this is resData: ', res._data);
+    //console.log('this is resData: ', res._data);
 
     expect(res._ended).to.equal(true);
   });

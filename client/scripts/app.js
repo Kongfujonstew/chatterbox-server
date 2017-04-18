@@ -21,6 +21,7 @@ var app = {
 
       success: function (data) {
         console.log('chatterbox: Message sent');
+        this.fetch();
       },
 
       error: function (data) {
@@ -135,7 +136,7 @@ var app = {
   //this renders a single room
   renderRoom: function(room) {
 
-    if (room  && !room.includes('<script>')) {
+    if (room && !room.includes('<script>')) {
       var $roomSelect = $('#roomSelect');
       var $newRoom = $('<option></option>');
       $newRoom.attr('value', room);
