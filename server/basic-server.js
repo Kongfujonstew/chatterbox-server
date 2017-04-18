@@ -2,7 +2,6 @@
 var http = require('http');
 var handler = require('./request-handler');
 
-
 var handleRequest = handler.requestHandler;
 
 
