@@ -1,3 +1,6 @@
+var bodyParser = require('body-parser');
+
+
 /*************************************************************
 
 You should implement your request handler function in this file.
@@ -11,8 +14,68 @@ this file and include it in basic-server.js so that it actually works.
 *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html.
 
 **************************************************************/
+var defaultCorsHeaders = {
+  'access-control-allow-origin': '*',
+  'access-control-allow-methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'access-control-allow-headers': 'content-type, accept',
+  'access-control-max-age': 10 // Seconds.
+};
 
 var requestHandler = function(request, response) {
+  console.log('Serving request type ' + request.method + ' for url ' + request.url);
+
+  var messages = [];
+
+
+  var headers = defaultCorsHeaders;
+  headers['Content-Type'] = 'application/json';
+
+  var handleGetRequest = (request, response) => {
+    var messageObj = {
+      results: messages
+    };
+    var statusCode = 200;
+    var messageBody = JSON.stringify(messageObj);
+    response.writeHead(statusCode, headers);
+    response.end(messageBody);
+
+  };
+
+  var handlePostRequest = (request, response) => {
+    var statusCode = 201;
+    var body = [];
+    request.on('data', function(chunk) {
+      body.push(chunk);
+    }).on('end', function() {
+      body = Buffer.concat(body).toString();
+      messages.push(body);
+      console.log(messages);// = Buffer.concat(messages).toString();
+    });
+    console.log(messages);
+    response.writeHead(statusCode, headers);
+    // testObj = JSON.stringify(request);
+    response.end('hello');  
+  };
+
+  var handleError = (request, response) => {
+    var statusCode = 404;
+    response.writeHead(statusCode, headers);
+    response.end('ERROR!');
+  };
+
+
+  if (request.method === 'GET') {
+    handleGetRequest(request, response);
+
+
+  } else if (request.method === 'POST') {
+    // console.log('------------------------------------------------------------', request.?????);
+    handlePostRequest(request, response);
+  }
+
+
+
+
   // Request and Response come from node's http module.
   //
   // They include information about both the incoming request, such as
@@ -27,23 +90,18 @@ var requestHandler = function(request, response) {
   // Adding more logging to your server can be an easy way to get passive
   // debugging help, but you should always be careful about leaving stray
   // console.logs in your code.
-  console.log('Serving request type ' + request.method + ' for url ' + request.url);
 
   // The outgoing status.
-  var statusCode = 200;
 
   // See the note below about CORS headers.
-  var headers = defaultCorsHeaders;
 
   // Tell the client we are sending them plain text.
   //
   // You will need to change this if you are sending something
   // other than plain text, like JSON or HTML.
-  headers['Content-Type'] = 'text/plain';
 
   // .writeHead() writes to the request line and headers of the response,
   // which includes the status and all headers.
-  response.writeHead(statusCode, headers);
 
   // Make sure to always call response.end() - Node may not send
   // anything back to the client until you do. The string you pass to
@@ -52,7 +110,6 @@ var requestHandler = function(request, response) {
   //
   // Calling .end "flushes" the response's internal buffer, forcing
   // node to actually send all the data over to the client.
-  response.end('Hello, World!');
 };
 
 // These headers will allow Cross-Origin Resource Sharing (CORS).
@@ -64,10 +121,6 @@ var requestHandler = function(request, response) {
 //
 // Another way to get around this restriction is to serve you chat
 // client from this domain by setting up static file serving.
-var defaultCorsHeaders = {
-  'access-control-allow-origin': '*',
-  'access-control-allow-methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'access-control-allow-headers': 'content-type, accept',
-  'access-control-max-age': 10 // Seconds.
-};
+
+module.exports.handleRequest = requestHandler;
 
