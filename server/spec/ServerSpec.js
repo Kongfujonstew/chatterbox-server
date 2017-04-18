@@ -59,10 +59,9 @@ describe('Node Server Request Listener Function', function() {
   it('Should accept posts to /classes/room', function() {
     var stubMsg = {
       username: 'Jono',
-      message: 'Do my bidding!',
-      roomname: 'trash'
+      message: 'Do my bidding!'
     };
-    var req = new stubs.request('/classes/messages/trash', 'POST', stubMsg);
+    var req = new stubs.request('/classes/messages', 'POST', stubMsg);
     var res = new stubs.response();
 
     handler.requestHandler(req, res);

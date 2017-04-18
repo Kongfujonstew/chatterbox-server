@@ -78,16 +78,19 @@ var app = {
     $('#chats').empty();
   },
 
+
+//changing text to message!!!!!!!!!!!!!!!!!!!!!!!!
+
   renderMessage: function(message) {
     var $chatDiv = $('#chats');
     var $newChat = $('<div></div>');
-    if (message.text && message.text.includes('<script>')) {
+    if (message.message && message.message.includes('<script>')) {
 
       $newChat.text('DANGER!!!!!!!!!!!! Message deleted');
       console.log('script found');
       $chatDiv.append($newChat);
-    } else if (message.text && message.username) {
-      $newChat.text('[' + message.roomname + '] ' + message.username + ': ' + message.text);
+    } else if (message.message && message.username) {
+      $newChat.text('[' + message.roomname + '] ' + message.username + ': ' + message.message);
       $newDelete = $('<div class="deleteMe">Delete User</div>');
       $newDelete.attr('user', message.username);
       $newChat.addClass('chat');

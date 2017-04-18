@@ -15,7 +15,11 @@ this file and include it in basic-server.js so that it actually works.
 
 **************************************************************/
 var messages = {
-  lobby: []
+  lobby: [{
+    username: 'Jono',
+    message: 'Do my bidding!',
+    roomname: 'lobby'
+  }]
 };
 
 
@@ -45,6 +49,7 @@ var requestHandler = function(req, res) {
       results: messages.lobby 
     };
     var statusCode = 200;
+    //console.log(messageObj);
     var messageBody = JSON.stringify(messageObj);
     res.writeHead(statusCode, headers);
     res.end(messageBody);
@@ -53,10 +58,10 @@ var requestHandler = function(req, res) {
 
   var handlePostRequest = (req, res) => {
     var room = req.url.slice(18);
-    console.log('this is roomname in request-handler: ', room);
+    //console.log('this is roomname in request-handler: ', room);
     //find the room by slicing req.method
 
-
+  //MOVE lines 74 75________________________________________________________
 
     //ask if the room exists
     //add in functionality to check if messages.room exists.  if not create it if so add message to that room
@@ -64,13 +69,13 @@ var requestHandler = function(req, res) {
     var body = [];
     req.on('data', function(chunk) {
       body.push(chunk);
-      //console.log(req.client["_events"].data)
-    }).on('end', function() {
-      body = Buffer.concat(body).toString();
+      //body = Buffer.concat(body).toString();
       messages.lobby.push(JSON.parse(body));
-    });
+      //console.log(req.client["_events"].data)
+    });//.on('end', function() {
+    //});
     res.writeHead(statusCode, headers);
-    res.end('hello');  
+    res.end('Post complete');  
   };
   //console.log(messages)
 
@@ -85,15 +90,15 @@ var requestHandler = function(req, res) {
   //   handlePostRequest(req, res);
   // }
 
+  //console.log('here is the url: ', req.url);
+
   if (req.url !== '/classes/messages') {
     handleError(req, res);
   }
 
-  if (req.url === '/classes/messages/trash') {
-    handlePostRequest(req, res);
-  }
 
-  if (req.method === 'GET') {
+  if (req.method === 'OPTIONS' || req.method === 'GET') {
+    console.log('handleGetRequest fired');
     handleGetRequest(req, res);
   } else if (req.method === 'POST') {
     handlePostRequest(req, res);
