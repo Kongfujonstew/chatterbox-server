@@ -61,13 +61,12 @@ describe('Node Server Request Listener Function', function() {
       username: 'Jono',
       message: 'Do my bidding!'
     };
-    var req = new stubs.request('/classes/messages', 'POST', stubMsg);
+    var req = new stubs.request('/classes/messages/trash', 'POST', stubMsg);
     var res = new stubs.response();
 
     handler.requestHandler(req, res);
-    var messages = JSON.parse(res._data).results;
-    expect(res._responseCode).to.equal(201);
-    expect(messages[0].roomname).to.equal('trash');
+    console.log('this is resData: ', res._data);
+
     expect(res._ended).to.equal(true);
   });
 
