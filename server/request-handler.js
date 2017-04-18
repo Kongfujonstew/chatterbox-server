@@ -14,6 +14,7 @@ this file and include it in basic-server.js so that it actually works.
 *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html.
 
 **************************************************************/
+var messages = [];
 var defaultCorsHeaders = {
   'access-control-allow-origin': '*',
   'access-control-allow-methods': 'GET, POST, PUT, DELETE, OPTIONS',
@@ -24,7 +25,6 @@ var defaultCorsHeaders = {
 var requestHandler = function(request, response) {
   console.log('Serving request type ' + request.method + ' for url ' + request.url);
 
-  var messages = [];
 
 
   var headers = defaultCorsHeaders;
@@ -48,14 +48,12 @@ var requestHandler = function(request, response) {
       body.push(chunk);
     }).on('end', function() {
       body = Buffer.concat(body).toString();
-      messages.push(body);
-      console.log(messages);// = Buffer.concat(messages).toString();
+      messages.push(JSON.parse(body));
     });
-    console.log(messages);
     response.writeHead(statusCode, headers);
-    // testObj = JSON.stringify(request);
     response.end('hello');  
   };
+
 
   var handleError = (request, response) => {
     var statusCode = 404;
@@ -64,12 +62,14 @@ var requestHandler = function(request, response) {
   };
 
 
+  if (request.url !== '/classes/messages') {
+    handleError(request, response);
+  }
+
+
   if (request.method === 'GET') {
     handleGetRequest(request, response);
-
-
   } else if (request.method === 'POST') {
-    // console.log('------------------------------------------------------------', request.?????);
     handlePostRequest(request, response);
   }
 
@@ -122,5 +122,5 @@ var requestHandler = function(request, response) {
 // Another way to get around this restriction is to serve you chat
 // client from this domain by setting up static file serving.
 
-module.exports.handleRequest = requestHandler;
+module.exports.requestHandler = requestHandler;
 
