@@ -14,7 +14,15 @@ this file and include it in basic-server.js so that it actually works.
 *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html.
 
 **************************************************************/
-var messages = []; //change this to an object with each room as a property
+var messages = {
+  lobby: []
+};
+
+
+
+
+
+
 var defaultCorsHeaders = {
   'access-control-allow-origin': '*',
   'access-control-allow-methods': 'GET, POST, PUT, DELETE, OPTIONS',
@@ -32,8 +40,9 @@ var requestHandler = function(req, res) {
 
   var handleGetRequest = (req, res) => {
     //parse the url string and ask what room, and return only that room's messages
+
     var messageObj = {
-      results: messages
+      results: messages.lobby 
     };
     var statusCode = 200;
     var messageBody = JSON.stringify(messageObj);
@@ -43,6 +52,8 @@ var requestHandler = function(req, res) {
   };
 
   var handlePostRequest = (req, res) => {
+    var room = req.url.slice(18);
+    console.log('this is roomname in request-handler: ', room);
     //find the room by slicing req.method
 
 
@@ -56,7 +67,7 @@ var requestHandler = function(req, res) {
       //console.log(req.client["_events"].data)
     }).on('end', function() {
       body = Buffer.concat(body).toString();
-      messages.push(JSON.parse(body));
+      messages.lobby.push(JSON.parse(body));
     });
     res.writeHead(statusCode, headers);
     res.end('hello');  
@@ -78,7 +89,9 @@ var requestHandler = function(req, res) {
     handleError(req, res);
   }
 
-
+  if (req.url === '/classes/messages/trash') {
+    handlePostRequest(req, res);
+  }
 
   if (req.method === 'GET') {
     handleGetRequest(req, res);
@@ -88,6 +101,8 @@ var requestHandler = function(req, res) {
 
 
 
+
+//redo messages array, including get request so that it returns lobby by default
 
   // req and res come from node's http module.
   //

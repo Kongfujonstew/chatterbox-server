@@ -38,7 +38,7 @@ var app = {
       url: this.server,
       type: 'GET',
       dataType: 'json',
-      data: {'order': '-createdAt', 'limit': 1000},
+      // data: {'order': '-createdAt', 'limit': 1000},
       contentType: 'json',
 
       success: function (data, status) {

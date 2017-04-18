@@ -59,18 +59,16 @@ describe('Node Server Request Listener Function', function() {
   it('Should accept posts to /classes/room', function() {
     var stubMsg = {
       username: 'Jono',
-      message: 'Do my bidding!'
+      message: 'Do my bidding!',
+      roomname: 'trash'
     };
-    var req = new stubs.request('/classes/messages', 'POST', stubMsg);
+    var req = new stubs.request('/classes/messages/trash', 'POST', stubMsg);
     var res = new stubs.response();
 
     handler.requestHandler(req, res);
-    // Expect 201 Created response status
+    var messages = JSON.parse(res._data).results;
     expect(res._responseCode).to.equal(201);
-
-    // Testing for a newline isn't a valid test
-    // TODO: Replace with with a valid test
-    expect(res._data).to.equal(JSON.stringify(stubMsg));
+    expect(messages[0].roomname).to.equal('trash');
     expect(res._ended).to.equal(true);
   });
 
