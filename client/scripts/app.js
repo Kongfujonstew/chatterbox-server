@@ -21,7 +21,7 @@ var app = {
 
       success: function (data) {
         console.log('chatterbox: Message sent');
-        this.fetch();
+        app.fetch();
       },
 
       error: function (data) {
@@ -44,11 +44,11 @@ var app = {
 
       success: function (data, status) {
         console.log('chatterbox: fetch success');
-        console.log(data, status);
+        console.log(data.results, status);
         var chats = data.results;
 
         for (var i = 0; i < chats.length; i++) {
-
+              // app.renderMessage(chats[i]);
           //render all messages
           if (!roomname || roomname === 'All rooms') {
             app.renderMessage(chats[i]);
@@ -83,15 +83,16 @@ var app = {
 //changing text to message!!!!!!!!!!!!!!!!!!!!!!!!
 
   renderMessage: function(message) {
+    console.log('render message: ', message);
     var $chatDiv = $('#chats');
     var $newChat = $('<div></div>');
-    if (message.message && message.message.includes('<script>')) {
+    if (message.text && message.text.includes('<script>')) {
 
       $newChat.text('DANGER!!!!!!!!!!!! Message deleted');
       console.log('script found');
       $chatDiv.append($newChat);
-    } else if (message.message && message.username) {
-      $newChat.text('[' + message.roomname + '] ' + message.username + ': ' + message.message);
+    } else if (message.text && message.username) {
+      $newChat.text('[' + message.roomname + '] ' + message.username + ': ' + message.text);
       $newDelete = $('<div class="deleteMe">Delete User</div>');
       $newDelete.attr('user', message.username);
       $newChat.addClass('chat');

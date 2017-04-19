@@ -1,11 +1,7 @@
 var bodyParser = require('body-parser');
 
 var messages = {
-  lobby: [{
-    username: 'Jono',
-    message: 'Do my bidding!',
-    roomname: 'lobby'
-  }]
+  lobby: []
 };
 
 var defaultCorsHeaders = {
@@ -38,32 +34,29 @@ var requestHandler = function(req, res) {
   };
 
   var handlePostRequest = (req, res) => {
-    var room = req.url.slice(18);
+    var room = req.url.slice(18) || 'lobby';
+
     var statusCode = 201;
     var body = [];
     req.on('data', function(chunk) {
       body.push(chunk);
-      messages.lobby.push(JSON.parse(body));
+      console.log('hello from handlePostRequest, body = ', body);
+      messages[room].push(JSON.parse(body));
     });
     res.writeHead(statusCode, headers);
-    res.end('Post complete');  
+    res.end(JSON.stringify(messages[room]));  
   };
 
   var handleError = (req, res) => {
     var statusCode = 404;
     res.writeHead(statusCode, headers);
-    res.end('ERROR!');
+    res.end('error');
   };
-
 
 
   if (req.url !== '/classes/messages') {
     handleError(req, res);
-  }
-
-
-  if (req.method === 'OPTIONS' || req.method === 'GET') {
-    //console.log('handleGetRequest fired');
+  } else if (req.method === 'OPTIONS' || req.method === 'GET') {
     handleGetRequest(req, res);
   } else if (req.method === 'POST') {
     handlePostRequest(req, res);
